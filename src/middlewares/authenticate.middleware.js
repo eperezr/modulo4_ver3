@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
 export function authenticateToken(req, res, next){
+    try{
     //Obtener el token de las cabecera
     const authHeader = req.header('authorization')
     //Bearer
@@ -14,7 +15,11 @@ export function authenticateToken(req, res, next){
             return res.sendStatus(403)
         console.log('user', user)
         req.user = user;
-        next()
+        next();
 
-    })
+    });
+       } catch (error) {
+        // Si hay un error, enviamos un mensaje
+        res.status(401).json({ message: 'Usuario no autorizado' });
+    };
 }
